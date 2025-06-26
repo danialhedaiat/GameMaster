@@ -81,3 +81,8 @@ class BoardGameComment(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL)
     reply = models.ForeignKey('BoardGameComment', on_delete=models.CASCADE, null=True)
     comment = models.TextField()
+
+
+class ShelfLocation(models.Model):
+    boardgame = models.ForeignKey(BoardGame, on_delete=models.CASCADE)
+    shelf_id = models.PositiveSmallIntegerField()
