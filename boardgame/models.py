@@ -1,6 +1,50 @@
 from django.db import models
 
-# Create your models here.
+from main.models import User
+
+
+class BoardGame(models.Model):
+    class Category(models.TextChoices):
+        STRATEGY = 'ST', 'Strategy'
+        FAMILY = 'FA', 'Family'
+        PARTY = 'PA', 'Party'
+        COOP = 'CO', 'Cooperative'
+        CARD = 'CA', 'Card Game'
+        WAR = "WA", 'War Game'
+
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    play_time = models.TimeField()
+    cover_image = models.ImageField(upload_to='BoardGame/')
+    category = models.CharField(max_length=2, choices=Category.choices)
+    difficulty = models.PositiveSmallIntegerField()
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL)
+
+
+class BoardGameComponent(models.Model):
+    class ComponentType(models.TextChoices):
+        BOARD = 'BOARD', 'Board'
+        CARD = 'CARD', 'Card'
+        TILE = 'TILE', 'Tile'
+        PAWN = 'PAWN', 'Pawn'
+        DICE = 'DICE', 'Dice'
+        TOKEN = 'TOKEN', 'Token'
+        RULEBOOK = 'RULEBOOK', 'Rulebook'
+        OTHER = 'OTHER', 'Other'
+    boardgame = models.ForeignKey(BoardGame, related_name='components', on_delete=models.CASCADE)
+    type = models.CharField(max_length=20, choices=ComponentType.choices)
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+    image = models.ImageField(upload_to='components/', blank=True, null=True)
+    score = models.CharField(max_length=20, null=True, blank=True)
+    cost_value = models.CharField(max_length=100, null=True, blank=True)
+    event = models.CharField(max_length=100, null=True, blank=True)
+    quantity = models.PositiveIntegerField(default=1)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return f"{self.name} ({self.get_type_display()})"
+
 
 class ComponentTag(models.Model):
     component = models.ForeignKey(BoardGameComponent, on_delete=models.CASCADE, related_name='tags')
