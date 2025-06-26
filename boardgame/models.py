@@ -21,3 +21,10 @@ class BoardGameRanking(models.Model):
     rank = models.PositiveSmallIntegerField()
     user = models.ForeignKey(User, on_delete=models.SET_NULL)
     boardgame = models.ForeignKey(BoardGame, on_delete=models.SET_NULL)
+
+
+class BoardGameComment(models.Model):
+    bordgame = models.ForeignKey(BoardGame, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL)
+    reply = models.ForeignKey('BoardGameComment', on_delete=models.CASCADE, null=True)
+    comment = models.TextField()
