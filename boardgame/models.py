@@ -57,8 +57,16 @@ class ComponentTag(models.Model):
 
 
 class Tutorial(models.Model):
+    class TutorialStatus(models.TextChoices):
+        DRAFT = 'DR', 'draft'
+        PUBLISH = 'PB', 'publish'
+
     title = models.CharField(max_length=100)
     boardgame = models.ForeignKey(BoardGame, on_delete=models.SET_NULL)
+    text = models.TextField(null=True, blank=True)
+    video = models.FileField(upload_to='tutorial/videos/', null=True, blank=True)
+    voice = models.FileField(upload_to='tutorial/voices/', null=True, blank=True)
+    status = models.CharField(max_length=2, choices=TutorialStatus.choices)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL)
 
 
