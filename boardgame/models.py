@@ -18,7 +18,8 @@ class BoardGame(models.Model):
     cover_image = models.ImageField(upload_to='BoardGame/')
     category = models.CharField(max_length=2, choices=Category.choices)
     difficulty = models.PositiveSmallIntegerField()
-    created_by = models.ForeignKey(User, on_delete=models.SET_NULL)
+    price = models.PositiveIntegerField(null=True, blank=True)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
 
 class BoardGameComponent(models.Model):
