@@ -20,6 +20,7 @@ class BoardGame(models.Model):
     difficulty = models.PositiveSmallIntegerField()
     price = models.PositiveIntegerField(null=True, blank=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
 
 
 class BoardGameComponent(models.Model):
