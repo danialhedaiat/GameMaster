@@ -41,7 +41,7 @@ class BoardGameComponent(models.Model):
     cost_value = models.CharField(max_length=100, null=True, blank=True)
     event = models.CharField(max_length=100, null=True, blank=True)
     quantity = models.PositiveIntegerField(default=1)
-    created_by = models.ForeignKey(User, on_delete=models.SET_NULL)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return f"{self.name} ({self.get_type_display()})"
@@ -50,7 +50,7 @@ class BoardGameComponent(models.Model):
 class ComponentTag(models.Model):
     component = models.ForeignKey(BoardGameComponent, on_delete=models.CASCADE, related_name='tags')
     tag = models.CharField(max_length=100)
-    created_by = models.ForeignKey(User, on_delete=models.SET_NULL)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return f"{self.tag} for {self.component.name} component"
@@ -62,23 +62,23 @@ class Tutorial(models.Model):
         PUBLISH = 'PB', 'publish'
 
     title = models.CharField(max_length=100)
-    boardgame = models.ForeignKey(BoardGame, on_delete=models.SET_NULL)
+    boardgame = models.ForeignKey(BoardGame, on_delete=models.SET_NULL, null=True, blank=True)
     text = models.TextField(null=True, blank=True)
     video = models.FileField(upload_to='tutorial/videos/', null=True, blank=True)
     voice = models.FileField(upload_to='tutorial/voices/', null=True, blank=True)
     status = models.CharField(max_length=2, choices=TutorialStatus.choices)
-    created_by = models.ForeignKey(User, on_delete=models.SET_NULL)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
 
 class BoardGameRanking(models.Model):
     rank = models.PositiveSmallIntegerField()
-    user = models.ForeignKey(User, on_delete=models.SET_NULL)
-    boardgame = models.ForeignKey(BoardGame, on_delete=models.SET_NULL)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    boardgame = models.ForeignKey(BoardGame, on_delete=models.SET_NULL, null=True, blank=True)
 
 
 class BoardGameComment(models.Model):
     bordgame = models.ForeignKey(BoardGame, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     reply = models.ForeignKey('BoardGameComment', on_delete=models.CASCADE, null=True, blank=True)
     comment = models.TextField()
 
