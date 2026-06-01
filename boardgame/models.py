@@ -20,7 +20,11 @@ class BoardGame(models.Model):
     difficulty = models.PositiveSmallIntegerField()
     price = models.PositiveIntegerField(null=True, blank=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['name', 'created_by'], name='unique_boardgame_name_per_user')
+        ]
 
 
 class BoardGameComponent(models.Model):
